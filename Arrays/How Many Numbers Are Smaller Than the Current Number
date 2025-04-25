@@ -1,0 +1,45 @@
+Question Link:https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number/
+//BruteForce Approach
+class Solution {
+  public:
+      vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+        vector<int>ans;
+        int count = 0;
+        for(int i=0;i<nums.size();i++){
+            int element = nums[i];
+            for(int j=0;j<nums.size();j++){
+                if(i!=j && nums[j]<element){
+                    count++;
+                }
+            }
+            ans.push_back(count);
+            count = 0;
+        }
+        return ans;
+    }
+  };
+
+
+//optimized approach
+class Solution {
+  public:
+      vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+          vector<int> count(101, 0);  // Count frequencies
+          for (int num : nums)
+              count[num]++;
+      
+          // Prefix sum to know how many numbers are smaller
+          for (int i = 1; i < 101; i++)
+              count[i] += count[i - 1];
+      
+          vector<int> result;
+          for (int num : nums) {
+              if (num == 0) 
+                  result.push_back(0);
+              else 
+                  result.push_back(count[num - 1]);
+          }
+      
+          return result;
+      }
+  };
